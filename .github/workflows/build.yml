@@ -22,6 +22,11 @@ jobs:
           7.0.x
           8.0.x
 
+    - uses: nuget/setup-nuget@v2
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v2
+
     - name: Restore
       run: nuget restore Elmah.Io.WinUI.sln
 
