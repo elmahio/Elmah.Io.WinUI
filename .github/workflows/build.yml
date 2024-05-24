@@ -52,7 +52,7 @@ jobs:
       run: dotnet test --no-build --configuration Release --verbosity normal
 
     - name: Pack
-      run: dotnet pack --configuration Release src/Elmah.Io.WinUI/Elmah.Io.WinUI.csproj /p:Version=5.1.${{ github.run_number }}-pre
+      run: dotnet pack --no-build --configuration Release src/Elmah.Io.WinUI/Elmah.Io.WinUI.csproj /p:Version=5.1.${{ github.run_number }}-pre
 
     - name: Install dotnet-validate
       run: dotnet tool install --global dotnet-validate --version 0.0.1-preview.304
