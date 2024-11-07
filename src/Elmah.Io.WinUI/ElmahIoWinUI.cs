@@ -16,6 +16,7 @@ namespace Elmah.Io.WinUI
     public static class ElmahIoWinUI
     {
         internal static readonly string _assemblyVersion = typeof(ElmahIoWinUI).Assembly.GetName().Version?.ToString() ?? "Unknown";
+        internal static readonly string _elmahIoClientAssemblyVersion = typeof(IElmahioAPI).Assembly.GetName().Version?.ToString() ?? "Unknown";
         internal static readonly string _winUiAssemblyVersion = typeof(Application).Assembly.GetName().Version?.ToString() ?? "Unknown";
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
@@ -56,6 +57,8 @@ namespace Elmah.Io.WinUI
 
             Application.Current.UnhandledException += (sender, args) =>
                 Log(args.Exception);
+
+            CreateInstallation();
         }
 
         /// <summary>
@@ -149,6 +152,38 @@ namespace Elmah.Io.WinUI
                 .Append(' ')
                 .Append(new ProductInfoHeaderValue(new ProductHeaderValue("Microsoft.WinUI", _winUiAssemblyVersion)).ToString())
                 .ToString();
+        }
+
+        private static void CreateInstallation()
+        {
+            try
+            {
+                var loggerInfo = new LoggerInfo
+                {
+                    Type = "Elmah.Io.WinUI",
+                    Properties = [],
+                    ConfigFiles = [],
+                    Assemblies =
+                    [
+                        new AssemblyInfo { Name = "Elmah.Io.WinUI", Version = _assemblyVersion },
+                        new AssemblyInfo { Name = "Elmah.Io.Client", Version = _elmahIoClientAssemblyVersion },
+                        new AssemblyInfo { Name = "Microsoft.WinUI", Version = _winUiAssemblyVersion }
+                    ],
+                };
+
+                var installation = new CreateInstallation
+                {
+                    Type = "windowsapp",
+                    Name = _options.Application,
+                    Loggers = [loggerInfo]
+                };
+
+                _logger.Installations.Create(_options.LogId.ToString(), installation);
+            }
+            catch
+            {
+                // We don't want to crash the entire application if the installation fails. Carry on.
+            }
         }
     }
 }
