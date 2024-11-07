@@ -27,12 +27,12 @@ namespace Elmah.Io.WinUI
         /// <summary>
         /// Initialize logging of all uncaught errors to elmah.io.
         /// </summary>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Usage", "CA2208:Instantiate argument exceptions correctly", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3928:Parameter names used into ArgumentException constructors should match an existing one ", Justification = "<Pending>")]
         public static void Init(ElmahIoWinUIOptions options)
         {
-            if (options == null) throw new ArgumentNullException(nameof(options));
-#pragma warning disable S3928 // Parameter names used into ArgumentException constructors should match an existing one
+            ArgumentNullException.ThrowIfNull(options);
             if (string.IsNullOrWhiteSpace(options.ApiKey)) throw new ArgumentNullException(nameof(options.ApiKey));
-#pragma warning restore S3928 // Parameter names used into ArgumentException constructors should match an existing one
             if (options.LogId == Guid.Empty) throw new ArgumentException(nameof(options.LogId));
 
             _options = options;
