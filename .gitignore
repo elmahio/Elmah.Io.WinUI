@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/samples/Elmah.Io.WinUI.Sample90/Properties/PublishProfiles/win-arm64.pubxml
+/samples/Elmah.Io.WinUI.Sample90/Properties/PublishProfiles/win-x64.pubxml
+/samples/Elmah.Io.WinUI.Sample90/Properties/PublishProfiles/win-x86.pubxml
