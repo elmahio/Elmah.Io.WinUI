@@ -167,7 +167,7 @@ namespace Elmah.Io.WinUI
                     [
                         new AssemblyInfo { Name = "Elmah.Io.WinUI", Version = _assemblyVersion },
                         new AssemblyInfo { Name = "Elmah.Io.Client", Version = _elmahIoClientAssemblyVersion },
-                        new AssemblyInfo { Name = "Microsoft.WinUI", Version = _winUiAssemblyVersion }
+                        new AssemblyInfo { Name = "Microsoft.WindowsAppSDK", Version = _winUiAssemblyVersion }
                     ],
                 };
 
