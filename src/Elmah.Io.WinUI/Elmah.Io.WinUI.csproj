@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Elmah.Io.Client" Version="[5.2.118,6)" />
+    <PackageReference Include="Elmah.Io.Client" Version="[5.3.124-pre,6)" />
     <PackageReference Include="System.Security.Principal.Windows" Version="5.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
   </ItemGroup>
