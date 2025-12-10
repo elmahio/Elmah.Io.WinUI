@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Elmah.Io.WinUI.Sample.Net10 (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Elmah.Io.WinUI.Sample.Net10 (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
