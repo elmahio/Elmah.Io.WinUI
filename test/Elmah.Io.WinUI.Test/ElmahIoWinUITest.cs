@@ -16,18 +16,18 @@ namespace Elmah.Io.WinUI.Test
                 Application = "MyApp"
             };
 
-            var optionsField = typeof(ElmahIoWinUI).GetField("_options", BindingFlags.Static | BindingFlags.NonPublic);
+            var optionsField = typeof(ElmahIoWinUI).GetField("options", BindingFlags.Static | BindingFlags.NonPublic);
             optionsField?.SetValue(null, options);
 
             var messagesClient = Substitute.For<IMessagesClient>();
             var elmahIoClient = Substitute.For<IElmahioAPI>();
             elmahIoClient.Messages.Returns(messagesClient);
 
-            var loggerField = typeof(ElmahIoWinUI).GetField("_logger", BindingFlags.Static | BindingFlags.NonPublic);
+            var loggerField = typeof(ElmahIoWinUI).GetField("logger", BindingFlags.Static | BindingFlags.NonPublic);
             loggerField?.SetValue(null, elmahIoClient);
 
             var breadcrumbs = new List<Breadcrumb>();
-            var breadcrumbsField = typeof(ElmahIoWinUI).GetField("_breadcrumbs", BindingFlags.Static | BindingFlags.NonPublic);
+            var breadcrumbsField = typeof(ElmahIoWinUI).GetField("breadcrumbs", BindingFlags.Static | BindingFlags.NonPublic);
             breadcrumbsField?.SetValue(null, breadcrumbs);
 
             ElmahIoWinUI.AddBreadcrumb(new Breadcrumb
