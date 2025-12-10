@@ -12,7 +12,7 @@ jobs:
     runs-on: windows-2025
 
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v5
@@ -45,33 +45,28 @@ jobs:
         fi
 
     - name: Build
-      run: msbuild Elmah.Io.WinUI.sln /t:Build /p:Configuration=Release /p:Version=5.3.${{ github.run_number }}-pre
+      run: msbuild Elmah.Io.WinUI.sln /t:Build /p:Configuration=Release /p:Version=5.3.${{ github.run_number }}
 
     - name: Test
       run: dotnet test --no-build --configuration Release --verbosity normal
 
     - name: Pack
-      run: dotnet pack --no-build --configuration Release src/Elmah.Io.WinUI/Elmah.Io.WinUI.csproj /p:Version=5.3.${{ github.run_number }}-pre
+      run: dotnet pack --no-build --configuration Release src/Elmah.Io.WinUI/Elmah.Io.WinUI.csproj /p:Version=5.3.${{ github.run_number }}
 
     - name: Install dotnet-validate
       run: dotnet tool install --global dotnet-validate --version 0.0.1-preview.537
 
     - name: Validate
-      run: dotnet-validate package local src/Elmah.Io.WinUI/bin/Release/Elmah.Io.WinUI.5.3.${{ github.run_number }}-pre.nupkg
+      run: dotnet-validate package local src/Elmah.Io.WinUI/bin/Release/Elmah.Io.WinUI.5.3.${{ github.run_number }}.nupkg
 
     - name: Push to nuget.org
-      run: dotnet nuget push src/Elmah.Io.WinUI/bin/Release/Elmah.Io.WinUI.5.3.${{ github.run_number }}-pre.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+      run: dotnet nuget push src/Elmah.Io.WinUI/bin/Release/Elmah.Io.WinUI.5.3.${{ github.run_number }}.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
       if: ${{ github.event_name == 'push' }}
 
     - name: Refresh Bugster
-      shell: pwsh
-      env:
-        FUNCTION_APP_URL: ${{ secrets.FUNCTION_APP_URL }}
-      run: |
-        $repoName = ($env:GITHUB_REPOSITORY -split '/')[1]
-        $json = @{ repository = $repoName } | ConvertTo-Json -Compress
-        curl --fail-with-body -X POST `
-             -H "Content-Type: application/json" `
-             -d "$json" `
-             $env:FUNCTION_APP_URL
-      if: ${{ github.event_name == 'push' }}
+      uses: elmahio/actions/refresh-bugster-repository@v1.2
+      with:
+        signing: ${{ secrets.BUGSTER_SIGNING_KEY }}
+        url: ${{ secrets.FUNCTION_APP_URL }}
+        repository: ${{ github.event.repository.name }}
+      if: ${{ github.event_name == 'push' && github.ref_name == 'main' }}
